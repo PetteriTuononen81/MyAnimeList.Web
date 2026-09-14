@@ -1,7 +1,7 @@
 # 🚀 Frontend Application
 
 <div align="center">
-  <img src="./.github/readme-assets/demo.png" alt="Application Screenshot" width="100%" style="border-radius: 8px;">
+  <img src="../.github/readme-assets/demo.png" alt="Application Screenshot" width="100%" style="border-radius: 8px;">
   <p><em>Current preview of the application interface.</em></p>
 </div>
 
