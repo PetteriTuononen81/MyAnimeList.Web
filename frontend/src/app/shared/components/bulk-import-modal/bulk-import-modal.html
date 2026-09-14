@@ -1,0 +1,74 @@
+<div class="modal-overlay" [class.open]="isOpen">
+  <div class="modal-content" role="dialog" aria-labelledby="modal-title">
+    <!-- Header -->
+    <div class="modal-header">
+      <h2 id="modal-title">{{ title }}</h2>
+      <button 
+        class="close-btn" 
+        (click)="closeModal()"
+        aria-label="Close modal">✕</button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+      <p class="instructions">
+        Paste your anime data below. Supported formats:
+      </p>
+
+      <ul class="format-hints">
+        <li><strong>JSON Array:</strong> [{"title":"Naruto","status":"watching","score":8.5},...]</li>
+        <li><strong>CSV/TSV:</strong> "Title,Status,Score" or "Title|Status|Score"</li>
+        <li><strong>Simple List:</strong> One anime per line</li>
+      </ul>
+
+      <!-- Textarea for input -->
+      <div class="input-container">
+        <textarea 
+          class="import-textarea"
+          [(ngModel)]="importText"
+          placeholder='Example: [{"title":"Attack on Titan","status":"watched","score":9.0},{"title":"One Piece","status":"watching","score":8.5}]'
+          rows="12"
+          [disabled]="isProcessing">
+        </textarea>
+
+        <!-- Error message -->
+        @if (errorMessage) {
+          <div class="error-message">{{ errorMessage }}</div>
+        }
+
+        <!-- Success message -->
+        @if (successMessage) {
+          <div class="success-message">{{ successMessage }}</div>
+        }
+      </div>
+
+      <!-- Action buttons -->
+      <div class="modal-actions">
+        <button 
+          class="btn btn-primary" 
+          [disabled]="!importText.trim() || isProcessing"
+          (click)="parseAnimeData()">
+          @if (isProcessing) {
+            <span class="spinner"></span> Processing...
+          } @else {
+            Import Anime
+          }
+        </button>
+
+        <button 
+          class="btn btn-secondary" 
+          [disabled]="isProcessing"
+          (click)="closeModal()">
+          Cancel
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <p class="footer-note">
+        Tip: You can import multiple anime at once. Each line or JSON object will be processed individually.
+      </p>
+    </div>
+  </div>
+</div>

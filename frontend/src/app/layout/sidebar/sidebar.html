@@ -1,0 +1,66 @@
+<div class="sidebar">
+  <div class="sidebar-header">
+    <h2 class="sidebar-logo">Anime List</h2>
+  </div>
+
+  <nav class="sidebar-nav">
+    <button class="nav-item" (click)="navigate('/home')">
+      <img class="nav-icon" src="icons/home.svg" alt="Home">
+      <span class="nav-text">Home</span>
+    </button>
+
+    <button class="nav-item" (click)="navigate('/search')">
+      <img class="nav-icon" src="icons/search.svg" alt="Search">
+      <span class="nav-text">Search</span>
+    </button>
+
+    <button class="nav-item" (click)="toggleLibrary()" [class.expanded]="isLibraryExpanded">
+      <img class="nav-icon" src="icons/library.svg" alt="Library">
+      <span class="nav-text">Library</span>
+      <span class="expand-arrow">{{ isLibraryExpanded ? '▼' : '▶' }}</span>
+    </button>
+
+    <!-- Sub-items (categories) - only show when Library is expanded -->
+    @if (isLibraryExpanded) {
+      <div class="sub-items">
+        @for (category of categories; track category) {
+          <button 
+            class="sub-item" 
+            [class.active]="activeCategory === category"
+            (click)="selectCategory(category)">
+            {{ getCategoryDisplayName(category) }}
+          </button>
+        }
+      </div>
+    }
+
+    <button class="nav-item" (click)="navigate('/profile')">
+      <img class="nav-icon" src="icons/profile.svg" alt="Profile">
+      <span class="nav-text">Profile</span>
+    </button>
+  </nav>
+
+  <!-- Theme toggle and auth at bottom of sidebar -->
+  <div class="sidebar-footer">
+    @if (currentUser$ | async; as user) {
+      <div class="user-info">
+        <span class="username">{{ user.username }}</span>
+        <button class="logout-btn" (click)="logout()">Logout</button>
+      </div>
+    } @else {
+      <button class="login-btn" (click)="navigate('/login')">
+        <span>🔐 Login</span>
+      </button>
+    }
+
+    <button class="theme-toggle-sidebar" (click)="toggleTheme()">
+      @if (themeService.isDark()) {
+        <span class="theme-icon">☀️</span>
+        <span class="theme-text">Light Mode</span>
+      } @else {
+        <span class="theme-icon">🌙</span>
+        <span class="theme-text">Dark Mode</span>
+      }
+    </button>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+<div class="content-wrapper">
+  <div class="library-banner">
+    <div class="banner-content">
+      <div class="banner-title">
+        <h1>{{ getCategoryDisplayName() }}</h1>
+        <p class="banner-subtitle">Your {{ getCategoryDisplayName().toLowerCase() }} collection</p>
+      </div>
+      <div class="banner-stats">
+        <div class="stat-item">
+          <div class="stat-value">{{ totalAnime }}</div>
+          <div class="stat-label">Total Anime</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">{{ watchingCount }}</div>
+          <div class="stat-label">Watching</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">{{ completedCount }}</div>
+          <div class="stat-label">Completed</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">{{ totalEpisodes }}</div>
+          <div class="stat-label">Episodes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-container">
+    @if (loading) {
+      <div class="loading-indicator">
+        <p>Loading your library...</p>
+      </div>
+    } @else if (animes.length > 0) {
+      @for (anime of animes; track anime.id) {
+        <app-anime-card 
+          [anime]="anime"
+          [showMoveButton]="true"
+          [currentStatus]="currentCategory"
+          (animeMoved)="onAnimeMoved()">
+        </app-anime-card>
+      }
+    } @else {
+      <div class="empty-state">
+        <div class="empty-icon">📚</div>
+        <h2>No anime in {{ getCategoryDisplayName() }}</h2>
+        <p>Start adding anime to your library from the search page!</p>
+      </div>
+    }
+  </div>
+</div>

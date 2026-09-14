@@ -1,0 +1,39 @@
+<div class="topnavbar">
+  <div class="navbar-header">
+    <!-- Mobile: Always visible search -->
+    <input 
+      type="text" 
+      class="search-input mobile-search" 
+      placeholder="Search anime..." 
+      [(ngModel)]="searchQuery"
+      (keyup.enter)="onSearch()">
+
+    <button class="search-btn mobile-search-btn" (click)="onSearch()">
+      <img src="icons/search.svg" alt="Search" class="search-icon">
+    </button>
+
+    <!-- Desktop: Center search -->
+    <div class="search-wrapper desktop-search-wrapper">
+      <input 
+        type="text" 
+        class="search-input desktop-search" 
+        placeholder="Search anime..." 
+        [(ngModel)]="searchQuery"
+        (keyup.enter)="onSearch()">
+      <button class="search-icon-btn" (click)="onSearch()">
+        <img src="icons/search.svg" alt="Search" class="icon">
+      </button>
+    </div>
+  </div>
+
+  <div class="categories-scroll">
+    @for (category of categories; track category) {
+      <button 
+        class="category-btn" 
+        [class.active]="activeCategory === category" 
+        (click)="selectCategory(category)">
+        {{ category }}
+      </button>
+    }
+  </div>
+</div>

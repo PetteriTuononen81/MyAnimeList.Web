@@ -1,0 +1,130 @@
+<div class="search-page">
+  <div class="search-header">
+    <h1>Search Anime</h1>
+    <p class="subtitle">Discover your next favorite anime</p>
+
+    <div class="search-bar">
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="Search by title, description, or genre..." 
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearchInput()">
+
+      @if (searchQuery) {
+        <button class="clear-btn" (click)="clearSearch()">
+          ✕
+        </button>
+      }
+
+      <!-- Bulk Import Button -->
+      <button 
+        class="bulk-import-btn" 
+        [class.active]="showBulkImportModal"
+        (click)="openBulkImportModal()"
+        title="Bulk import anime from text">
+        <span class="btn-icon">📥</span>
+        <span class="btn-text">Import</span>
+      </button>
+
+      <button class="filter-btn" (click)="toggleFilters()" [class.active]="showFilters">
+        <span class="filter-icon">🔍</span>
+      </button>
+    </div>
+
+    @if (showFilters) {
+      <div class="filter-options">
+        <button 
+          class="filter-option-btn" 
+          [class.active]="selectedFilter === 'all'"
+          (click)="selectFilter('all')">
+          All
+        </button>
+        <button 
+          class="filter-option-btn" 
+          [class.active]="selectedFilter === 'movie'"
+          (click)="selectFilter('movie')">
+          🎬 Movie
+        </button>
+        <button 
+          class="filter-option-btn" 
+          [class.active]="selectedFilter === 'tv'"
+          (click)="selectFilter('tv')">
+          📺 TV Show
+        </button>
+      </div>
+    }
+
+    <!-- Bulk Import Result Message -->
+    @if (bulkImportResult) {
+      <div class="import-result-info">
+        <p>
+          <strong>Import Complete!</strong> 
+          {{ bulkImportResult.successCount }} anime added successfully.
+          @if (bulkImportResult.errorCount > 0) {
+            {{ bulkImportResult.errorCount }} entries had errors and were skipped.
+          }
+        </p>
+      </div>
+    }
+
+    <div class="search-results-info">
+      @if (filteredAnimes$ | async; as animes) {
+        @if (searchQuery) {
+          <p>Found {{ animes.length }} results for "{{ searchQuery }}"</p>
+        } @else {
+          <p>Showing {{ animes.length }} anime</p>
+        }
+      }
+    </div>
+  </div>
+
+  <div class="search-results">
+    @if (filteredAnimes$ | async; as animes) {
+      @if (animes.length > 0) {
+        <div class="cards-container">
+          @for (anime of animes; track anime.id) {
+            <app-anime-card 
+              [anime]="anime"
+              [showLibraryButton]="authService.isAuthenticated"
+              [currentStatus]="getAnimeLibraryStatus(anime.malId)"
+              [showInLibraryStyle]="true"
+              [showLibraryOptions]="isLibraryDropdownOpen(anime.id)"
+              (toggleLibraryOptions)="toggleLibraryDropdown(anime.id)"
+              (libraryOptionSelected)="openLibraryDropdownId = null; onAnimeAddedOrMoved()"
+              (animeMoved)="openLibraryDropdownId = null; onAnimeAddedOrMoved()">
+            </app-anime-card>
+          }
+        </div>
+
+        @if (loading$ | async) {
+          <div class="loading-indicator">
+            <p>Loading more anime...</p>
+          </div>
+        } @else if (!(loading$ | async)) {
+          <div class="end-message">
+            <p>No more anime to load</p>
+          </div>
+        }
+      } @else if (loading$ | async) {
+        <div class="loading-indicator">
+          <p>Loading anime...</p>
+        </div>
+      } @else {
+        <div class="no-results">
+          <div class="no-results-icon">🔍</div>
+          <h2>No results found</h2>
+          <p>Try searching with different keywords</p>
+        </div>
+      }
+    }
+  </div>
+</div>
+
+<!-- Bulk Import Modal -->
+<app-bulk-import-modal 
+  [title]="'Bulk Import Anime'"
+  [isOpen]="showBulkImportModalForModal"
+  (close)="closeBulkImportModal()"
+  (importComplete)="onBulkImportComplete($event)">
+</app-bulk-import-modal>

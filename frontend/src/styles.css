@@ -1,0 +1,66 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* ============================================
+   THEME VARIABLES - Light & Dark Mode
+   ============================================ */
+
+/* Light theme (default) */
+:root {
+  /* Backgrounds */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f3f4f6;
+  --bg-tertiary: #e5e7eb;
+
+  /* Text colors */
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+
+  /* Accent colors */
+  --accent-primary: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-light: #3b82f6;
+
+  /* Card colors */
+  --card-bg: #ffffff;
+  --card-shadow: rgba(0, 0, 0, 0.1);
+  --card-shadow-hover: rgba(0, 0, 0, 0.15);
+
+  /* Status badge colors */
+  --badge-primary: #667eea;
+  --badge-secondary: #764ba2;
+}
+
+/* Dark theme */
+body.dark-mode {
+  /* Backgrounds */
+  --bg-primary: #1f2937;
+  --bg-secondary: #374151;
+  --bg-tertiary: #4b5563;
+
+  /* Text colors */
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-tertiary: #9ca3af;
+
+  /* Accent colors */
+  --accent-primary: #3b82f6;
+  --accent-hover: #60a5fa;
+  --accent-light: #60a5fa;
+
+  /* Card colors */
+  --card-bg: #374151;
+  --card-shadow: rgba(0, 0, 0, 0.3);
+  --card-shadow-hover: rgba(0, 0, 0, 0.5);
+
+  /* Status badge colors */
+  --badge-primary: #8b5cf6;
+  --badge-secondary: #a78bfa;
+}
+
+/* Global body styles */
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.s ease, color 0.2s ease;
+}

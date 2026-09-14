@@ -1,0 +1,8 @@
+<app-sidebar></app-sidebar>
+@if (showTopNavbar) {
+  <app-topnavbar></app-topnavbar>
+}
+<div class="app-container" [class.no-top-padding]="!showTopNavbar" [class.with-sidebar]="true">
+  <router-outlet></router-outlet>
+</div>
+<app-bottomnavbar></app-bottomnavbar>

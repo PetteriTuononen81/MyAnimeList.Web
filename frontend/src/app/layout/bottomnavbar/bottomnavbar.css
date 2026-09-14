@@ -1,0 +1,55 @@
+.bottomnavbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background: var(--bg-primary);
+  box-shadow: 0 -2px 4px var(--card-shadow);
+  z-index: 100;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 8px;
+}
+
+.nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+  flex: 1;
+  max-width: 80px;
+}
+
+.nav-btn:hover {
+  color: var(--accent-primary);
+}
+
+.nav-btn:active {
+  color: var(--accent-hover);
+}
+
+.nav-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.nav-label {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Hide on desktop - show regular top nav instead */
+@media (min-width: 768px) {
+  .bottomnavbar {
+    display: none;
+  }
+}

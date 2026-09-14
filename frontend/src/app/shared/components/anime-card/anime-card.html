@@ -1,0 +1,77 @@
+<div class="anime-card" [class.in-library]="isInLibrary && showInLibraryStyle">
+  <div class="anime-image">
+    <img [src]="anime.imageUrl" [alt]="anime.englishTitle || anime.title">
+    @if (anime.score) {
+      <div class="score-badge">
+        <span class="score-icon">⭐</span>
+        <span class="score-value">{{ anime.score }}</span>
+      </div>
+    }
+  </div>
+  <div class="anime-info">
+    <h3 class="anime-title">{{ anime.englishTitle || anime.title }}</h3>
+    <p class="anime-description">{{ anime.synopsis }}</p>
+    <div class="anime-meta">
+      <span class="status">{{ anime.status }}</span>
+      <span class="episodes">{{ anime.episodes }} Episodes</span>
+    </div>
+
+    @if (showLibraryButton) {
+      <div class="library-actions">
+        <button 
+          class="add-to-library-btn" 
+          [class.in-library]="isInLibrary"
+          (click)="onToggleLibraryOptions()">
+          <span class="btn-icon">{{ libraryButtonIcon }}</span>
+          <span class="btn-text">{{ libraryButtonText }}</span>
+        </button>
+
+        @if (showLibraryOptions) {
+          <div class="library-options">
+            @if (isInLibrary) {
+              @for (status of availableMoveStatuses; track status.value) {
+                <button 
+                  class="library-option-btn" 
+                  (click)="addToLibrary(status.value)">
+                  <span class="option-icon">{{ status.icon }}</span>
+                  <span class="option-label">{{ status.label }}</span>
+                </button>
+              }
+            } @else {
+              @for (status of libraryStatuses; track status.value) {
+                <button 
+                  class="library-option-btn" 
+                  (click)="addToLibrary(status.value)">
+                  <span class="option-icon">{{ status.icon }}</span>
+                  <span class="option-label">{{ status.label }}</span>
+                </button>
+              }
+            }
+          </div>
+        }
+      </div>
+    }
+
+    @if (showMoveButton) {
+      <div class="move-actions">
+        <button class="move-to-btn" (click)="onToggleMoveOptions()">
+          <span class="btn-icon">↔️</span>
+          <span class="btn-text">Move to...</span>
+        </button>
+
+        @if (showMoveOptions) {
+          <div class="move-options">
+            @for (status of availableMoveStatuses; track status.value) {
+              <button 
+                class="move-option-btn" 
+                (click)="moveToStatus(status.value)">
+                <span class="option-icon">{{ status.icon }}</span>
+                <span class="option-label">{{ status.label }}</span>
+              </button>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

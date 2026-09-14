@@ -1,0 +1,49 @@
+<div class="profile-container">
+  <div class="profile-header">
+    <img [src]="user.avatar" alt="Profile Avatar" class="avatar">
+    <h2 class="username">{{ user.username }}</h2>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-value">{{ user.stats.totalWatched }}</span>
+      <span class="stat-label">Completed</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">{{ user.stats.hoursWatched }}</span>
+      <span class="stat-label">Hours</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">{{ user.stats.favorites }}</span>
+      <span class="stat-label">Favorites</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3 class="section-title">Currently Watching</h3>
+    <div class="watching-display">
+      {{ getCurrentlyWatchingDisplay() }}
+    </div>
+  </div>
+
+  <div class="section">
+    <h3 class="section-title">Settings</h3>
+
+    <div class="setting-item">
+      <div class="setting-info">
+        <span class="setting-label">Dark Mode</span>
+        <span class="setting-description">Switch between light and dark theme</span>
+      </div>
+      <button class="theme-toggle" (click)="toggleTheme()">
+        @if (isDarkMode()) {
+          <span class="theme-icon">🌙</span>
+        } @else {
+          <span class="theme-icon">☀️</span>
+        }
+      </button>
+    </div>
+
+    <button class="btn-secondary">Edit Profile</button>
+    <button class="btn-danger">Logout</button>
+  </div>
+</div>

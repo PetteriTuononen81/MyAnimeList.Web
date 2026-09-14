@@ -1,0 +1,46 @@
+/* Main content area - scrollable */
+.app-container {
+  padding-top: 100px; /* Space for top navbar (search + categories) on mobile */
+  padding-bottom: 70px; /* Space for bottom nav on mobile */
+  min-height: 100vh; /* At least full height */
+  overflow-y: auto; /* Allow vertical scrolling */
+}
+
+.app-container.no-top-padding {
+  padding-top: 0; /* No top navbar on home/profile page */
+}
+
+/* Desktop: Add left margin for sidebar */
+@media (min-width: 768px) {
+  .app-container.with-sidebar {
+    margin-left: 240px; /* Match sidebar width */
+    padding-bottom: 0; /* No bottom nav on desktop */
+  }
+
+  .app-container {
+    padding-top: 60px; /* Smaller top padding (only search bar) on desktop */
+  }
+
+  .app-container.no-top-padding {
+    padding-top: 0; /* Still no padding for home/profile */
+  }
+}
+
+
+/* DESKTOP (1024px+) - Even wider container */
+@media (min-width: 1024px) {
+  .content-wrapper {
+    max-width: 960px;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+}
+
+/* LARGE DESKTOP (1440px+) - Maximum width */
+@media (min-width: 1440px) {
+  .content-wrapper {
+    max-width: 1200px;
+  }
+}

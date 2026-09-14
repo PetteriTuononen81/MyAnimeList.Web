@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Angular Project Architecture Diagram -->
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+  <defs>
+    <!-- Color palette -->
+    <style>
+      .box { fill: #f5f5f5; stroke: #333; stroke-width: 2; rx: 8; }
+      .title { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; text-anchor: middle; }
+      .subtitle { font-family: Arial, sans-serif; font-size: 12px; fill: #666; text-anchor: middle; }
+      .arrow { stroke: #333; stroke-width: 2; marker-end: url(#arrowhead); }
+      .label { font-family: Arial, sans-serif; font-size: 10px; fill: #555; text-anchor: middle; }
+    </style>
+    
+    <!-- Arrow marker -->
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+    
+    <!-- Gradient for boxes -->
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8f4f8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d4eef7;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="400" fill="#fafafa"/>
+
+  <!-- Title -->
+  <text x="300" y="30" class="title">MyAnimeList.Web - Angular Architecture</text>
+  
+  <!-- Layer Labels -->
+  <text x="20" y="50" class="subtitle">LAYER 1: Layout</text>
+  <text x="460" y="50" class="subtitle">LAYER 3: Features</text>
+  <text x="20" y="180" class="subtitle">LAYER 2: Shared</text>
+  <text x="460" y="180" class="subtitle">CORE (Singletons)</text>
+
+  <!-- Layer 3 - Features -->
+  <rect x="50" y="70" width="100" height="50" fill="url(#grad1)" stroke="#2c3e50" stroke-width="2" rx="8"/>
+  <text x="100" y="95" class="title">Features</text>
+  
+  <!-- Layer 2 - Shared -->
+  <rect x="450" y="70" width="100" height="50" fill="url(#grad1)" stroke="#2c3e50" stroke-width="2" rx="8"/>
+  <text x="500" y="95" class="title">Shared</text>
+
+  <!-- Layer 1 - Layout -->
+  <rect x="50" y="160" width="100" height="50" fill="url(#grad1)" stroke="#2c3e50" stroke-width="2" rx="8"/>
+  <text x="100" y="185" class="title">Layout</text>
+
+  <!-- Core Services -->
+  <rect x="450" y="160" width="100" height="50" fill="#e8f4f8" stroke="#2c3e50" stroke-width="2" rx="8"/>
+  <text x="500" y="185" class="title">Core</text>
+
+  <!-- Arrows -->
+  <!-- Features → Shared (reuse) -->
+  <line x1="150" y1="95" x2="450" y2="95" class="arrow"/>
+  
+  <!-- Layout → Core (services) -->
+  <line x1="150" y1="185" x2="450" y2="185" class="arrow"/>
+
+  <!-- Labels for arrows -->
+  <text x="300" y="90" class="label">Reuse Components</text>
+  <text x="300" y="180" class="label">Use Services</text>
+
+  <!-- Legend -->
+  <rect x="250" y="340" width="100" height="40" fill="#f5f5f5" stroke="#ccc" rx="4"/>
+  <text x="300" y="358" class="subtitle">Legend</text>
+  
+  <!-- Legend items -->
+  <rect x="260" y="360" width="15" height="15" fill="#e8f4f8" stroke="#2c3e50"/>
+  <text x="280" y="372" class="label">Features</text>
+  
+  <rect x="300" y="360" width="15" height="15" fill="#d4eef7" stroke="#2c3e50"/>
+  <text x="320" y="372" class="label">Shared</text>
+  
+  <rect x="340" y="360" width="15" height="15" fill="#fafafa" stroke="#ccc"/>
+  <text x="360" y="372" class="label">Layout</text>
+
+  <!-- Footer -->
+  <text x="300" y="395" class="subtitle" font-size="8">Angular Component Architecture Diagram</text>
+</svg>
