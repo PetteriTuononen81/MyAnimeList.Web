@@ -173,10 +173,8 @@ export class Search implements OnInit, OnDestroy {
   }
 
   closeBulkImportModal(): void {
-    console.log('[Parent] Closing modal. Previous state:', this.showBulkImportModal);
     this.showBulkImportModal = false;
     this.bulkImportResult = undefined;
-    console.log('[Parent] New state:', this.showBulkImportModal);
   }
 
   get showBulkImportModalForModal() {
@@ -190,7 +188,8 @@ export class Search implements OnInit, OnDestroy {
     setTimeout(() => {
       this.closeBulkImportModal();
       
-      // Optionally, you could trigger a refresh or notification here
+      // Todo we are going to have a new popup with the result of import. showing all animes. 
+      // Probbly want to handle animes that could not find and that already is in library.
       console.log(`Import complete: ${result.length} anime entries imported.`);
     }, 1500);
   }
