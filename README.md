@@ -80,23 +80,6 @@ ng build
 
 This compiles your project and stores the build artifacts in the `dist/` directory. By default, the production build optimizes the application for performance and speed.
 
----
-
-## 🧪 Testing
-
-* **Unit Tests:** Execute unit tests with the [Vitest](https://vitest.dev/) test runner:
-  ```bash
-  ng test
-  ```
-
-* **End-to-End (E2E) Tests:** Run end-to-end testing with:
-  ```bash
-  ng e2e
-  ```
-  *(Note: Angular CLI does not come with an end-to-end testing framework by default. You can configure your preferred framework.)*
-
----
-
 ## 📚 Additional Resources
 
 For more detailed command references and advanced configurations, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli).

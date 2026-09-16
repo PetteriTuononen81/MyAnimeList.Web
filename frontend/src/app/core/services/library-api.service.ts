@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LibraryEntry, AddToLibraryRequest } from '../models/library.model';
 import { environment } from '../../../environments/environment';
+import { Anime } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,10 @@ export class LibraryApiService {
 
   constructor(private http: HttpClient) {}
 
+  bulkImportAnime(rawText: string): Observable<Anime[]> {
+    return this.http.post<Anime[]>(`${this.apiUrl}/bulk-import`, { text: rawText });
+  }
+  
   addToLibrary(request: AddToLibraryRequest): Observable<LibraryEntry> {
     return this.http.post<LibraryEntry>(this.apiUrl, request);
   }

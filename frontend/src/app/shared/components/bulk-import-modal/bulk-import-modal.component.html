@@ -12,21 +12,15 @@
     <!-- Body -->
     <div class="modal-body">
       <p class="instructions">
-        Paste your anime data below. Supported formats:
+        Paste your raw anime data below:
       </p>
-
-      <ul class="format-hints">
-        <li><strong>JSON Array:</strong> [{"title":"Naruto","status":"watching","score":8.5},...]</li>
-        <li><strong>CSV/TSV:</strong> "Title,Status,Score" or "Title|Status|Score"</li>
-        <li><strong>Simple List:</strong> One anime per line</li>
-      </ul>
 
       <!-- Textarea for input -->
       <div class="input-container">
         <textarea 
           class="import-textarea"
           [(ngModel)]="importText"
-          placeholder='Example: [{"title":"Attack on Titan","status":"watched","score":9.0},{"title":"One Piece","status":"watching","score":8.5}]'
+          [placeholder]="'Paste your raw text or list here...'"
           rows="12"
           [disabled]="isProcessing">
         </textarea>
@@ -67,7 +61,7 @@
     <!-- Footer -->
     <div class="modal-footer">
       <p class="footer-note">
-        Tip: You can import multiple anime at once. Each line or JSON object will be processed individually.
+        Tip: You can import raw text or lists. The server will process the payload.
       </p>
     </div>
   </div>

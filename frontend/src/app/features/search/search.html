@@ -56,18 +56,14 @@
     }
 
     <!-- Bulk Import Result Message -->
-    @if (bulkImportResult) {
-      <div class="import-result-info">
-        <p>
-          <strong>Import Complete!</strong> 
-          {{ bulkImportResult.successCount }} anime added successfully.
-          @if (bulkImportResult.errorCount > 0) {
-            {{ bulkImportResult.errorCount }} entries had errors and were skipped.
-          }
-        </p>
-      </div>
-    }
-
+ @if (bulkImportResult && bulkImportResult.length > 0) {
+  <div class="import-result-info">
+    <p>
+      <strong>Import Complete!</strong> 
+      {{ bulkImportResult.length }} anime added successfully.
+    </p>
+  </div>
+}
     <div class="search-results-info">
       @if (filteredAnimes$ | async; as animes) {
         @if (searchQuery) {

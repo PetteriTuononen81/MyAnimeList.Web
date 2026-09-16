@@ -38,7 +38,7 @@ export class Search implements OnInit, OnDestroy {
 
   // Bulk import modal state
   showBulkImportModal = false;
-  bulkImportResult?: { successCount: number; errorCount: number };
+  bulkImportResult?: Anime[];
 
   constructor(
     private facade: SearchFacade,
@@ -173,15 +173,17 @@ export class Search implements OnInit, OnDestroy {
   }
 
   closeBulkImportModal(): void {
+    console.log('[Parent] Closing modal. Previous state:', this.showBulkImportModal);
     this.showBulkImportModal = false;
     this.bulkImportResult = undefined;
+    console.log('[Parent] New state:', this.showBulkImportModal);
   }
 
   get showBulkImportModalForModal() {
     return this.showBulkImportModal;
   }
 
-  onBulkImportComplete(result: { successCount: number; errorCount: number }): void {
+  onBulkImportComplete(result: Anime[] ): void {
     this.bulkImportResult = result;
     
     // Close modal after a short delay to show the result message
@@ -189,7 +191,7 @@ export class Search implements OnInit, OnDestroy {
       this.closeBulkImportModal();
       
       // Optionally, you could trigger a refresh or notification here
-      console.log(`Import complete: ${result.successCount} successful, ${result.errorCount} errors`);
+      console.log(`Import complete: ${result.length} anime entries imported.`);
     }, 1500);
   }
 }
