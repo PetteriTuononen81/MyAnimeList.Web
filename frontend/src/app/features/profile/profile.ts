@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AnimeApiService } from '../../core/services/anime-api.service';
+import { LibraryApiService } from '../../core/services/library-api.service';
 import { Theme } from '../../core/services/theme';
-import { Anime, AnimeStatus } from '../../core/models/anime.model';
+import { LibraryEntry } from '../../core/models/library.model';
 
 @Component({
   selector: 'app-profile',
@@ -10,8 +10,8 @@ import { Anime, AnimeStatus } from '../../core/models/anime.model';
   templateUrl: './profile.html',
   styleUrl: './profile.css',
 })
-export class Profile {
-  currentlyWatching: Anime[] = [];
+export class Profile implements OnInit {
+  currentlyWatching: LibraryEntry[] = [];
 
   user = {
     username: 'AnimeUser123',
@@ -24,11 +24,14 @@ export class Profile {
   };
 
   constructor(
-    private animeService: AnimeApiService,
+    private libraryService: LibraryApiService,
     public themeService: Theme
-  ) {
-    const allAnimes = this.animeService.getDummyAnimes();
-    this.currentlyWatching = allAnimes.filter(anime => anime.status === AnimeStatus.WATCHING);
+  ) {}
+
+  ngOnInit() {
+    this.libraryService.getLibrary('WATCHING').subscribe(entries => {
+      this.currentlyWatching = entries;
+    });
   }
 
   toggleTheme() {
@@ -44,8 +47,8 @@ export class Profile {
       return 'None';
     }
     if (this.currentlyWatching.length === 1) {
-      return this.currentlyWatching[0].title;
+      return this.currentlyWatching[0].anime?.title || 'Unknown';
     }
-    return `${this.currentlyWatching[0].title} +${this.currentlyWatching.length - 1}`;
+    return `${this.currentlyWatching[0].anime?.title || 'Unknown'} +${this.currentlyWatching.length - 1}`;
   }
 }
