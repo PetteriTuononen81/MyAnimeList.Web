@@ -17,14 +17,19 @@
 
       <!-- Textarea for input -->
       <div class="input-container">
-        <textarea 
+      <textarea
           class="import-textarea"
           [(ngModel)]="importText"
-          [placeholder]="'Paste your raw text or list here...'"
-          rows="12"
+          placeholder="Paste your anime list here (e.g. Naruto - Watching&#10;One Piece - Completed)..."
+          rows="10"
           [disabled]="isProcessing">
         </textarea>
-
+        <div class="line-counter-info" [class.over-limit]="isOverLimit">
+          <span>{{ currentLineCount }} / {{ maxLines }} lines used</span>
+          <span *ngIf="isOverLimit" style="display: block; color: #ef4444;">
+            Please limit your import to {{ maxLines }} entries per batch.
+          </span>
+        </div>
         <!-- Error message -->
         @if (errorMessage) {
           <div class="error-message">{{ errorMessage }}</div>
@@ -38,15 +43,12 @@
 
       <!-- Action buttons -->
       <div class="modal-actions">
-        <button 
-          class="btn btn-primary" 
-          [disabled]="!importText.trim() || isProcessing"
-          (click)="parseAnimeData()">
-          @if (isProcessing) {
-            <span class="spinner"></span> Processing...
-          } @else {
-            Import Anime
-          }
+       <button 
+         class="btn btn-primary" 
+        (click)="parseAnimeData()" 
+        [disabled]="isProcessing || !importText.trim() || isOverLimit"
+        >
+          {{ isProcessing ? 'Processing...' : 'Parse List' }}
         </button>
 
         <button 

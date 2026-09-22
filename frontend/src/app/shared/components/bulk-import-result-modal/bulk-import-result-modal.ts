@@ -32,7 +32,8 @@ export class BulkImportResultModalComponent {
   
   @Output() close = new EventEmitter<void>();
   @Output() importFinished = new EventEmitter<void>();
-
+  @Input() maxLines = 20;
+  
   selectableCandidates: SelectableImportCandidate[] = [];
   searchQuery = '';
   statusFilter = 'ALL';

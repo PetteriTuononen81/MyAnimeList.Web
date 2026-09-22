@@ -18,12 +18,22 @@ export class BulkImportModal {
   
   @Output() close = new EventEmitter<void>();
   @Output() importComplete = new EventEmitter<BulkImportCandidateResponse[]>();
+  @Input() maxLines = 20;
 
   importText = '';
   isProcessing = false;
   errorMessage = '';
   successMessage = '';
   constructor(private libraryService: LibraryApiService) {}
+
+  get currentLineCount(): number {
+    if (!this.importText || !this.importText.trim()) return 0;
+    return this.importText.split('\n').filter(line => line.trim().length > 0).length;
+  }
+
+  get isOverLimit(): boolean {
+    return this.currentLineCount > this.maxLines;
+  }
 
   parseAnimeData(): void {
     const rawText = this.importText;

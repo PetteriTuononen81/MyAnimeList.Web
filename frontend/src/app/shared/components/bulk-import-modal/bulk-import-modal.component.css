@@ -103,15 +103,30 @@
   padding: 1rem;
   border: 2px solid var(--bg-tertiary);
   border-radius: 8px;
-  background-color: var(--bg-secondary);
-  color: var(--text-primary);
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
   font-family: 'Monaco', 'Consolas', monospace;
   font-size: 0.9rem;
   resize: vertical;
   outline: none;
   transition: border-color 0.2s ease, background-color 0.2s ease;
 }
+.line-counter-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary, #94a3b8);
+}
 
+.line-counter-info.over-limit {
+  color: #ef4444;
+}
+
+.limit-warning {
+  font-weight: 500;
+}
 .import-textarea:focus {
   border-color: var(--accent-primary);
   background-color: var(--bg-primary);
