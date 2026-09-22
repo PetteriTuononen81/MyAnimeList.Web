@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LibraryApiService } from '../../../core/services/library-api.service';
 import { Anime } from '../../../core/models';
+import { BulkImportCandidateResponse } from '../../../core/models/Response/BulkImportCandidateResponse';
 
 @Component({
   selector: 'app-bulk-import-modal',
@@ -16,7 +17,7 @@ export class BulkImportModal {
   @Input() isOpen = false;
   
   @Output() close = new EventEmitter<void>();
-  @Output() importComplete = new EventEmitter<Anime[]>();
+  @Output() importComplete = new EventEmitter<BulkImportCandidateResponse[]>();
 
   importText = '';
   isProcessing = false;
@@ -33,16 +34,16 @@ export class BulkImportModal {
 
     // Pass the raw text payload directly to your backend API service
     this.libraryService.bulkImportAnime(rawText).subscribe({
-      next: (foundAnimes: Anime[]) => {
-        this.isProcessing = false;
-        this.importComplete.emit(foundAnimes);
-        this.closeModal();
-      },
-      error: (err) => {
-        this.isProcessing = false;
-        this.errorMessage = err?.message || 'Failed to import anime list. Please try again.';
-      }
-    });
+    next: (results: BulkImportCandidateResponse[]) => {
+      this.isProcessing = false;
+      this.importComplete.emit(results);
+      this.closeModal();
+  },
+  error: (err) => {
+    this.isProcessing = false;
+    this.errorMessage = err?.message || 'Failed to import anime list. Please try again.';
+    }
+  });
   }
 
 closeModal(): void {

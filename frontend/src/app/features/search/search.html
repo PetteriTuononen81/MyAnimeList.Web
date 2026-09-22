@@ -55,15 +55,6 @@
       </div>
     }
 
-    <!-- Bulk Import Result Message -->
- @if (bulkImportResult && bulkImportResult.length > 0) {
-  <div class="import-result-info">
-    <p>
-      <strong>Import Complete!</strong> 
-      {{ bulkImportResult.length }} anime added successfully.
-    </p>
-  </div>
-}
     <div class="search-results-info">
       @if (filteredAnimes$ | async; as animes) {
         @if (searchQuery) {
@@ -120,7 +111,15 @@
 <!-- Bulk Import Modal -->
 <app-bulk-import-modal 
   [title]="'Bulk Import Anime'"
-  [isOpen]="showBulkImportModalForModal"
+  [isOpen]="showBulkImportModal"
   (close)="closeBulkImportModal()"
   (importComplete)="onBulkImportComplete($event)">
 </app-bulk-import-modal>
+
+<!-- Modal 2: Candidate Review Table -->
+<app-bulk-import-result-modal
+  [isOpen]="showBulkImportResultModal"
+  [candidates]="bulkImportCandidates"
+  (close)="closeBulkImportResultModal()"
+  (importFinished)="onBulkImportFinished()"
+></app-bulk-import-result-modal>

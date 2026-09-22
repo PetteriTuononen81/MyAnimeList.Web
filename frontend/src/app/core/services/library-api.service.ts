@@ -4,19 +4,24 @@ import { Observable } from 'rxjs';
 import { LibraryEntry, AddToLibraryRequest } from '../models/library.model';
 import { environment } from '../../../environments/environment';
 import { Anime } from '../models';
+import { BulkImportCandidateResponse } from '../models/Response/BulkImportCandidateResponse';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LibraryApiService {
   private readonly apiUrl = `${environment.apiUrl}/library`;
+  private readonly apiImportUrl = `${environment.apiUrl}/anime`;
 
   constructor(private http: HttpClient) {}
 
-  bulkImportAnime(rawText: string): Observable<Anime[]> {
-    return this.http.post<Anime[]>(`${this.apiUrl}/bulk-import`, { text: rawText });
-  }
-  
+bulkImportAnime(rawText: string): Observable<BulkImportCandidateResponse[]> {
+  return this.http.post<BulkImportCandidateResponse[]>(
+    `${this.apiImportUrl}/bulk-import`, 
+    { rawText: rawText } 
+  );
+}
+
   addToLibrary(request: AddToLibraryRequest): Observable<LibraryEntry> {
     return this.http.post<LibraryEntry>(this.apiUrl, request);
   }

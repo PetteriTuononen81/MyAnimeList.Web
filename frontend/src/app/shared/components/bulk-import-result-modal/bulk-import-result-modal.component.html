@@ -1,0 +1,98 @@
+<div class="modal-backdrop" *ngIf="isOpen" (click)="onClose()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="modal-header">
+      <h2>Bulk Import: Review and Import Candidates</h2>
+      <button class="close-btn" (click)="onClose()">&times;</button>
+    </div>
+
+    <!-- Toolbar / Filters -->
+    <div class="toolbar">
+      <div class="search-filter-group">
+        <input 
+          type="text" 
+          placeholder="Search candidates..." 
+          [(ngModel)]="searchQuery" 
+          class="search-input"
+        />
+        <select [(ngModel)]="statusFilter" class="status-select">
+          <option value="ALL">All Statuses</option>
+          <option value="MATCHED">Matched</option>
+          <option value="AMBIGUOUS">Ambiguous</option>
+        </select>
+      </div>
+
+      <div class="action-group">
+        <button class="btn btn-secondary" (click)="onClose()">Cancel</button>
+        <button class="btn btn-primary" (click)="onConfirm()" [disabled]="selectedCount === 0">
+          Import Selected ({{ selectedCount }})
+        </button>
+      </div>
+    </div>
+
+    <!-- Table View -->
+    <div class="table-container">
+      <table class="candidates-table">
+        <thead>
+          <tr>
+            <th class="col-checkbox">
+              <input 
+                type="checkbox" 
+                [checked]="isAllSelected" 
+                (change)="toggleSelectAll($event)"
+              />
+            </th>
+            <th class="col-poster">Poster</th>
+            <th>Matched Anime Title</th>
+            <th>Input Title / Status</th>
+            <th>Target Library Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr 
+            *ngFor="let item of filteredCandidates" 
+            [class.row-selected]="item.selected"
+            [class.row-ambiguous]="item.status === 'AMBIGUOUS'"
+          >
+            <td class="col-checkbox">
+              <input type="checkbox" [(ngModel)]="item.selected" />
+            </td>
+            <td class="col-poster">
+              <img 
+                [src]="item.anime?.imageUrl || 'assets/placeholder.png'" 
+                [alt]="item.anime?.title" 
+                class="poster-img"
+              />
+            </td>
+            <td class="col-title">
+              <div class="title-text">{{ item.anime?.title || 'No Match Found' }}</div>
+              <span class="badge" [ngClass]="item.status.toLowerCase()">
+                {{ item.status }}
+              </span>
+            </td>
+            <td class="col-raw">
+              <span class="raw-label">Found by text:</span>
+              <code class="raw-title">"{{ item.rawTitle }}"</code>
+            </td>
+            <td class="col-target-status">
+              <select [(ngModel)]="item.targetStatus" [disabled]="!item.selected">
+                <option value="WATCHING">Watching</option>
+                <option value="COMPLETED">Completed</option>
+                <option value="PLAN_TO_WATCH">Plan to Watch</option>
+                <option value="DROPPED">Dropped</option>
+              </select>
+            </td>
+          </tr>
+          <tr *ngIf="filteredCandidates.length === 0">
+            <td colspan="5" class="no-results">No candidates match your current filter.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Footer Summary -->
+    <div class="modal-footer">
+      <span>Found {{ selectableCandidates.length }} items from text. {{ selectedCount }} selected for import.</span>
+    </div>
+  </div>
+</div>

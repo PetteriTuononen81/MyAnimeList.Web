@@ -10,10 +10,12 @@ import { AuthService } from '../../core/services/auth.service';
 import { LibraryApiService } from '../../core/services/library-api.service';
 import { LibraryEntry } from '../../core/models/library.model';
 import { Anime } from '../../core/models/anime.model';
+import { BulkImportResultModalComponent, SelectableImportCandidate } from '../../shared/components/bulk-import-result-modal/bulk-import-result-modal';
+import { BulkImportCandidateResponse } from '../../core/models/Response/BulkImportCandidateResponse';
 
 @Component({
   selector: 'app-search',
-  imports: [CommonModule, FormsModule, AnimeCard, BulkImportModal],
+  imports: [CommonModule, FormsModule, AnimeCard, BulkImportModal, BulkImportResultModalComponent],
   providers: [SearchFacade],
   templateUrl: './search.html',
   styleUrl: './search.css',
@@ -38,7 +40,9 @@ export class Search implements OnInit, OnDestroy {
 
   // Bulk import modal state
   showBulkImportModal = false;
-  bulkImportResult?: Anime[];
+  
+  showBulkImportResultModal = false;
+  bulkImportCandidates: BulkImportCandidateResponse[] = [];
 
   constructor(
     private facade: SearchFacade,
@@ -174,23 +178,22 @@ export class Search implements OnInit, OnDestroy {
 
   closeBulkImportModal(): void {
     this.showBulkImportModal = false;
-    this.bulkImportResult = undefined;
   }
 
-  get showBulkImportModalForModal() {
-    return this.showBulkImportModal;
+  onBulkImportComplete(results: BulkImportCandidateResponse[]): void {
+    this.closeBulkImportModal();
+    this.bulkImportCandidates = results;
+    this.showBulkImportResultModal = true;
   }
 
-  onBulkImportComplete(result: Anime[] ): void {
-    this.bulkImportResult = result;
-    
-    // Close modal after a short delay to show the result message
-    setTimeout(() => {
-      this.closeBulkImportModal();
-      
-      // Todo we are going to have a new popup with the result of import. showing all animes. 
-      // Probbly want to handle animes that could not find and that already is in library.
-      console.log(`Import complete: ${result.length} anime entries imported.`);
-    }, 1500);
+  // --- Modal 2 Handlers ---
+  closeBulkImportResultModal(): void {
+    this.showBulkImportResultModal = false;
+    this.bulkImportCandidates = [];
+  }
+
+  onBulkImportFinished(): void {
+    this.closeBulkImportResultModal();
+    this.loadUserLibrary();
   }
 }
