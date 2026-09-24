@@ -65,14 +65,14 @@
               />
             </td>
             <td class="col-title">
-              <div class="title-text">{{ item.anime?.title || 'No Match Found' }}</div>
+              <div class="title-text">{{ item.anime?.englishTitle || 'No Match Found' }}</div>
               <span class="badge" [ngClass]="item.status.toLowerCase()">
                 {{ item.status }}
               </span>
             </td>
             <td class="col-raw">
               <span class="raw-label">Found by text:</span>
-              <code class="raw-title">"{{ item.anime.englishTitle }}"</code>
+              <code class="raw-title">"{{ item.inputTitle }}"</code>
             </td>
             <td class="col-target-status">
               <select [(ngModel)]="item.targetStatus" [disabled]="!item.selected">

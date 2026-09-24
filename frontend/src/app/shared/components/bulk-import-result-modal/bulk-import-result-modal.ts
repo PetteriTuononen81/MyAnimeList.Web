@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BulkImportCandidateResponse } from '../../../core/models/Response/BulkImportCandidateResponse';
 import { LibraryApiService } from '../../../core/services/library-api.service';
+import { forkJoin } from 'rxjs';
+import { AddToLibraryRequest } from '../../../core/models';
+import { LibraryStatus } from '../../../core/models/library.model';
 
 export interface SelectableImportCandidate extends BulkImportCandidateResponse {
   selected: boolean;
@@ -32,8 +35,8 @@ export class BulkImportResultModalComponent {
   
   @Output() close = new EventEmitter<void>();
   @Output() importFinished = new EventEmitter<void>();
-  @Input() maxLines = 20;
-  
+
+
   selectableCandidates: SelectableImportCandidate[] = [];
   searchQuery = '';
   statusFilter = 'ALL';
@@ -42,14 +45,18 @@ export class BulkImportResultModalComponent {
 
   constructor(private libraryService: LibraryApiService) {}
 
-  get filteredCandidates(): SelectableImportCandidate[] {
-    return this.selectableCandidates.filter(item => {
-      const matchesSearch = item.anime?.title?.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-                            item.rawTitle?.toLowerCase().includes(this.searchQuery.toLowerCase());
-      const matchesStatus = this.statusFilter === 'ALL' || item.status === this.statusFilter;
-      return matchesSearch && matchesStatus;
-    });
-  }
+get filteredCandidates(): SelectableImportCandidate[] {
+  return this.selectableCandidates.filter(item => {
+    // Safely pull whatever title is available (official anime title OR raw input title)
+    const titleToSearch = (item.anime?.title || item.inputTitle || item.inputTitle || '').toLowerCase();
+    const query = (this.searchQuery || '').toLowerCase();
+
+    const matchesSearch = titleToSearch.includes(query);
+    const matchesStatus = this.statusFilter === 'ALL' || item.status === this.statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
+}
 
   get selectedCount(): number {
     return this.selectableCandidates.filter(c => c.selected).length;
@@ -68,24 +75,54 @@ export class BulkImportResultModalComponent {
     this.close.emit();
   }
 
-  onConfirm(): void {
-    const selectedItems = this.selectableCandidates.filter(c => c.selected);
+onConfirm(): void {
+    const selectedItems = this.selectableCandidates.filter(c => c.selected && c.anime?.id);
     if (selectedItems.length === 0) return;
 
     this.isSaving = true;
     this.errorMessage = '';
 
-    // Example logic: map candidates to AddToLibraryRequest objects or pass selected array
-    // Update this call to match your actual bulk save / add endpoint in LibraryApiService
-    const requests = selectedItems.map(item => ({
-      animeId: item.anime.id,
-      status: item.targetStatus
-    }));
+    // Map selected items to individual API observables
+    const saveObservables = selectedItems.map(item => {
+      const request: AddToLibraryRequest = {
+        malId: item.anime.id,
+        status: this.mapToLibraryStatus(item.targetStatus)
+      };
+      return this.libraryService.addToLibrary(request);
+    });
 
-    // Perform API save logic internally
-    // Example: this.libraryService.saveBulkToLibrary(requests).subscribe(...)
-    this.isSaving = false;
-    this.importFinished.emit();
-    this.onClose();
+    // Execute all API requests in parallel
+    forkJoin(saveObservables).subscribe({
+      next: () => {
+        this.isSaving = false;
+        this.importFinished.emit();
+        this.onClose();
+      },
+      error: (err) => {
+        this.isSaving = false;
+        this.errorMessage = 'Failed to save some entries to your library. Please try again.';
+        console.error('Bulk save error:', err);
+      }
+    });
   }
+
+  private mapToLibraryStatus(status: string): LibraryStatus {
+  const normalized = status?.toLowerCase().replace(/\s+/g, '');
+
+  switch (normalized) {
+    case 'watching':
+      return LibraryStatus.Watching;
+    case 'completed':
+      return LibraryStatus.Completed;
+    case 'ongoing':
+      return LibraryStatus.OnGoing;
+    case 'dropped':
+      return LibraryStatus.Dropped;
+    case 'plantowatch':
+    case 'plan_to_watch':
+      return LibraryStatus.PlanToWatch;
+    default:
+      return LibraryStatus.PlanToWatch; // Default fallback
+  }
+}
 }

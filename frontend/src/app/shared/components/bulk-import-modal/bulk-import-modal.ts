@@ -45,6 +45,7 @@ export class BulkImportModal {
     // Pass the raw text payload directly to your backend API service
     this.libraryService.bulkImportAnime(rawText).subscribe({
     next: (results: BulkImportCandidateResponse[]) => {
+      console.log('All API requests completed successfully. Responses:', results);
       this.isProcessing = false;
       this.importComplete.emit(results);
       this.closeModal();
