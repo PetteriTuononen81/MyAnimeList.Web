@@ -6,6 +6,8 @@ import { LibraryApiService } from '../../../core/services/library-api.service';
 import { forkJoin } from 'rxjs';
 import { AddToLibraryRequest } from '../../../core/models';
 import { LibraryStatus } from '../../../core/models/library.model';
+import { from } from 'rxjs';
+import { concatMap } from 'rxjs/operators';
 
 export interface SelectableImportCandidate extends BulkImportCandidateResponse {
   selected: boolean;
@@ -83,25 +85,29 @@ onConfirm(): void {
     this.errorMessage = '';
 
     // Map selected items to individual API observables
-    const saveObservables = selectedItems.map(item => {
+    const saveObservables = selectedItems
+    .filter(item => item?.anime != null)
+    .map(item => {
       const request: AddToLibraryRequest = {
-        malId: item.anime.id,
+        malId: item.anime.malId,
         status: this.mapToLibraryStatus(item.targetStatus)
       };
       return this.libraryService.addToLibrary(request);
     });
 
     // Execute all API requests in parallel
-    forkJoin(saveObservables).subscribe({
-      next: () => {
+  from(saveObservables)
+    .pipe(concatMap((obs$) => obs$))
+    .subscribe({
+      complete: () => {
         this.isSaving = false;
         this.importFinished.emit();
         this.onClose();
       },
       error: (err) => {
-        this.isSaving = false;
-        this.errorMessage = 'Failed to save some entries to your library. Please try again.';
-        console.error('Bulk save error:', err);
+      this.isSaving = false;
+      this.errorMessage = 'Failed to save some entries to your library. Please try again.';
+      console.error('Bulk save error:', err);
       }
     });
   }
