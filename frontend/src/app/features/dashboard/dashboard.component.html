@@ -1,33 +1,59 @@
 <div class="dashboard-container">
   <h1>Library Analytics</h1>
+  
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="label">Completed Anime</span>
+      <span class="value">{{ analytics()?.totalCompleted ?? 0 }}</span>
+    </div>
+
+    <div class="stat-card">
+      <span class="label">Episodes Watched</span>
+      <span class="value">{{ analytics()?.totalEpisodesWatched ?? 0 }}</span>
+    </div>
+
+    <div class="stat-card">
+      <span class="label">Plan to Watch</span>
+      <span class="value">{{ analytics()?.planToWatch ?? 0 }}</span>
+    </div>
+
+    <div class="stat-card">
+      <span class="label">Recently Completed</span>
+      <span class="value text-truncate">{{ analytics()?.recentlyCompletedTitle ?? 'N/A' }}</span>
+    </div>
+  </div>
 
   @if (isLoading()) {
     <p>Loading analytics...</p>
+  } @else if (error()) {
+    <p class="error">{{ error() }}</p>
   } @else if (analytics()) {
     <div class="grid-layout">
-      
-      <div class="card">
+  <div class="charts-row">
+    <div class="card">
+      <h2>Top Genres</h2>
+      <canvas baseChart
+        [data]="genresChartData()"
+        [type]="'bar'">
+      </canvas>
+    </div>
+
+    <div class="card">
+      <h2>Top Themes</h2>
+      <canvas baseChart
+        [data]="themesChartData()"
+        [type]="'bar'">
+      </canvas>
+    </div>
+  </div>
+
+        <div class="card chart-centered">
         <h2>Demographics</h2>
         <canvas baseChart
-          [data]="demographicsChartData()"
-          [type]="'doughnut'">
-        </canvas>
+            [data]="demographicsChartData()"
+            [type]="'doughnut'">
+          </canvas>
       </div>
-
-      <div class="card">
-        <h2>Top Genres</h2>
-        <canvas baseChart
-          [data]="genresChartData()"
-          [type]="'bar'">
-        </canvas>
-      </div>
-      <div class="card">
-        <h2>Top Themes</h2>
-        <canvas baseChart
-          [data]="themesChartData()"
-          [type]="'bar'">
-        </canvas>
-      </div>
-    </div>
+</div>
   }
 </div>

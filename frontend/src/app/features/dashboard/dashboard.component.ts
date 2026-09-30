@@ -20,45 +20,47 @@ export class DashboardComponent implements OnInit {
   readonly error = this.analyticsService.error;
   readonly analytics = this.analyticsService.analytics;
 
-readonly demographicsChartData = computed(() => {
-  const data = this.analytics()?.demographics ?? {};
-  return {
-    labels: ['Shounen', 'Seinen', 'Shoujo', 'Josei'],
-    datasets: [{
-      data: [
-        data['Shounen'] ?? 0,
-        data['Seinen'] ?? 0,
-        data['Shoujo'] ?? 0,
-        data['Josei'] ?? 0
-      ],
-      backgroundColor: ['#f87171', '#60a5fa', '#f472b6', '#c084fc']
-    }]
-  };
-});
+  readonly demographicsChartData = computed(() => {
+    const data = this.analytics()?.demographics ?? {};
+    return {
+      labels: ['Shounen', 'Seinen', 'Shoujo', 'Josei'],
+      datasets: [{
+        data: [
+          data['Shounen'] ?? 0,
+          data['Seinen'] ?? 0,
+          data['Shoujo'] ?? 0,
+          data['Josei'] ?? 0
+        ],
+        backgroundColor: ['#f87171', '#60a5fa', '#f472b6', '#c084fc']
+      }]
+    };
+  });
 
-readonly genresChartData = computed(() => {
-  const data = this.analyticsService.analytics()?.topGenres ?? {};
-  return {
-    labels: Object.keys(data),
-    datasets: [{
-      label: 'Anime Count',
-      data: Object.values(data),
-      backgroundColor: '#3b82f6'
-    }]
-  };
-});
+  readonly genresChartData = computed(() => {
+    const data = this.analytics()?.topGenres ?? {};
+    return {
+      labels: Object.keys(data),
+      datasets: [{
+        label: 'Anime Count',
+        data: Object.values(data),
+        backgroundColor: '#3b82f6',
+        indexAxis: 'y' as const
+      }]
+    };
+  });
 
-readonly themesChartData = computed(() => {
-  const data = this.analyticsService.analytics()?.topThemes ?? {};
-  return {
-    labels: Object.keys(data),
-    datasets: [{
-      label: 'Anime Count',
-      data: Object.values(data),
-      backgroundColor: '#10b981'
-    }]
-  };
-});
+  readonly themesChartData = computed(() => {
+    const data = this.analytics()?.topThemes ?? {};
+    return {
+      labels: Object.keys(data),
+      datasets: [{
+        label: 'Anime Count',
+        data: Object.values(data),
+        backgroundColor: '#10b981',
+        indexAxis: 'y' as const
+      }]
+    };
+  });
 
   ngOnInit(): void {
     this.analyticsService.loadUserAnalytics();
