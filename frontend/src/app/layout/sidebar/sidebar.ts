@@ -5,10 +5,11 @@ import { CategoryService } from '../../core/services/category.service';
 import { Theme } from '../../core/services/theme';
 import { AuthService } from '../../core/services/auth.service';
 import { ANIME_CATEGORIES, AnimeCategory } from '../../core/constants/categories';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css',
 })

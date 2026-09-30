@@ -1,0 +1,33 @@
+<div class="dashboard-container">
+  <h1>Library Analytics</h1>
+
+  @if (isLoading()) {
+    <p>Loading analytics...</p>
+  } @else if (analytics()) {
+    <div class="grid-layout">
+      
+      <div class="card">
+        <h2>Demographics</h2>
+        <canvas baseChart
+          [data]="demographicsChartData()"
+          [type]="'doughnut'">
+        </canvas>
+      </div>
+
+      <div class="card">
+        <h2>Top Genres</h2>
+        <canvas baseChart
+          [data]="genresChartData()"
+          [type]="'bar'">
+        </canvas>
+      </div>
+      <div class="card">
+        <h2>Top Themes</h2>
+        <canvas baseChart
+          [data]="themesChartData()"
+          [type]="'bar'">
+        </canvas>
+      </div>
+    </div>
+  }
+</div>

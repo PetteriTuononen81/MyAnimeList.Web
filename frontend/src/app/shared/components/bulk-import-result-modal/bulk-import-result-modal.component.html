@@ -59,13 +59,13 @@
             </td>
             <td class="col-poster">
               <img 
-                [src]="item.anime?.imageUrl || 'assets/placeholder.png'" 
-                [alt]="item.anime?.title" 
+                [src]="item.anime.imageUrl || 'assets/placeholder.png'" 
+                [alt]="item.anime.title" 
                 class="poster-img"
               />
             </td>
             <td class="col-title">
-              <div class="title-text">{{ item.anime?.englishTitle || 'No Match Found' }}</div>
+              <div class="title-text">{{ item.anime.englishTitle || 'No Match Found' }}</div>
               <span class="badge" [ngClass]="item.status.toLowerCase()">
                 {{ item.status }}
               </span>
