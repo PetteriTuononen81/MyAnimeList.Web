@@ -10,7 +10,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { LibraryApiService } from '../../core/services/library-api.service';
 import { LibraryEntry } from '../../core/models/library.model';
 import { Anime } from '../../core/models/anime.model';
-import { BulkImportResultModalComponent, SelectableImportCandidate } from '../../shared/components/bulk-import-result-modal/bulk-import-result-modal';
+import { BulkImportResultModalComponent} from '../../shared/components/bulk-import-result-modal/bulk-import-result-modal';
 import { BulkImportCandidateResponse } from '../../core/models/Response/BulkImportCandidateResponse';
 
 @Component({

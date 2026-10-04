@@ -28,32 +28,53 @@
   } @else if (error()) {
     <p class="error">{{ error() }}</p>
   } @else if (analytics()) {
-    <div class="grid-layout">
-  <div class="charts-row">
-    <div class="card">
-      <h2>Top Genres</h2>
-      <canvas baseChart
-        [data]="genresChartData()"
-        [type]="'bar'">
-      </canvas>
-    </div>
-
-    <div class="card">
-      <h2>Top Themes</h2>
-      <canvas baseChart
-        [data]="themesChartData()"
-        [type]="'bar'">
-      </canvas>
-    </div>
-  </div>
-
-        <div class="card chart-centered">
-        <h2>Demographics</h2>
-        <canvas baseChart
-            [data]="demographicsChartData()"
-            [type]="'doughnut'">
+    <div class="dashboard-grid">
+      <!-- Left Column -->
+      <div class="column">
+        <div class="card">
+          <h2>Top Genres</h2>
+          <canvas baseChart
+            [data]="genresChartData()"
+            [type]="'bar'">
           </canvas>
+        </div>
+
+        <div class="card">
+          <h2>Top Themes</h2>
+          <canvas baseChart
+            [data]="themesChartData()"
+            [type]="'bar'">
+          </canvas>
+        </div>
       </div>
-</div>
+
+      <!-- Right Column -->
+      <div class="column">
+        <div class="card">
+          <h2>Top Studios</h2>
+          <ul class="ranked-list">
+            @for (studio of topStudiosList(); track studio.name; let i = $index) {
+              <li class="ranked-item">
+                <span class="rank-badge" [class.top-three]="i < 3">{{ i + 1 }}</span>
+                <span class="studio-name">{{ studio.name }}</span>
+                <span class="studio-count">{{ studio.count }}</span>
+              </li>
+            } @empty {
+              <li class="empty-state">No studio data available</li>
+            }
+          </ul>
+        </div>
+
+        <div class="card chart-compact">
+          <h2>Demographics</h2>
+          <div class="chart-wrapper">
+            <canvas baseChart
+              [data]="demographicsChartData()"
+              [type]="'doughnut'">
+            </canvas>
+          </div>
+        </div>
+      </div>
+    </div>
   }
 </div>

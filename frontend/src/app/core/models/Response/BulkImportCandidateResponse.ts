@@ -5,5 +5,4 @@ export interface BulkImportCandidateResponse {
   inputTitle: string;
   status: string;
   confidence?: number;
-  rawTitle?: string;
 }

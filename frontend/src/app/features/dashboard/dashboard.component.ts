@@ -20,6 +20,21 @@ export class DashboardComponent implements OnInit {
   readonly error = this.analyticsService.error;
   readonly analytics = this.analyticsService.analytics;
 
+  readonly topStudiosList = computed(() => {
+    const data = this.analytics()?.topStudios;
+    if (!data) return [];
+
+    // Handles both Dictionary Record<string, number> or Array of objects
+    if (Array.isArray(data)) {
+      return data;
+    }
+
+    return Object.entries(data).map(([name, count]) => ({
+      name,
+      count
+    })).sort((a, b) => b.count - a.count);
+  });
+
   readonly demographicsChartData = computed(() => {
     const data = this.analytics()?.demographics ?? {};
     return {
