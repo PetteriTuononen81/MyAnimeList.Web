@@ -54,33 +54,3 @@ This repository contains the frontend application generated using **Angular CLI 
    ng serve
    ```
    Navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
----
-
-## 🧰 Development Workflow
-
-### Code Scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate new elements, use:
-
-```bash
-# Generate a new component
-ng generate component component-name
-
-# List all available schematics (components, directives, pipes, services, etc.)
-ng generate --help
-```
-
-### Building for Production
-
-To compile the project for production deployment:
-
-```bash
-ng build
-```
-
-This compiles your project and stores the build artifacts in the `dist/` directory. By default, the production build optimizes the application for performance and speed.
-
-## 📚 Additional Resources
-
-For more detailed command references and advanced configurations, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli).
